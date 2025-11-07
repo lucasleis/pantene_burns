@@ -20,6 +20,7 @@ npm run dev
 ## Vervel + ChatGPT
 ```
 npm install -g vercel
+vercel login
 ```
-
+Hacer login
 
