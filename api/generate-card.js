@@ -1,11 +1,15 @@
 // api/generate-card.js
 import OpenAI from "openai";
 
-export default async function handler(req, res) {
-  try {
-    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-    const { name, hairStyle, mood } = await req.json();
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Método no permitido" });
+  }
+
+  try {
+    const { name, hairStyle, mood } = req.body;
 
     const prompt = `
     Generá un texto inspiracional estilo Pantene para una persona llamada ${name},
@@ -18,13 +22,9 @@ export default async function handler(req, res) {
       messages: [{ role: "user", content: prompt }],
     });
 
-    return new Response(
-      JSON.stringify({ message: completion.choices[0].message.content }),
-      { status: 200 }
-    );
+    res.status(200).json({ message: completion.choices[0].message.content });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-    });
+    console.error("Error en generate-card:", error);
+    res.status(500).json({ error: error.message });
   }
 }

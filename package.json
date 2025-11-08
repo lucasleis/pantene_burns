@@ -1,0 +1,10 @@
+{
+  "name": "pantene_burns_root",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm run build"
+  },
+  "dependencies": {
+    "openai": "^4.77.0"
+  }
+}
